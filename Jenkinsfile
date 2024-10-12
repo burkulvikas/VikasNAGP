@@ -1,22 +1,27 @@
-    pipeline {
-        agent any
+node{
+    try{
+        stage('CheckOutCode'){
 
-        stages {
-            stage('Build') {
-                steps {
-                    echo 'Building..'
-                }
-            }
-            stage('Test') {
-                steps {
-                    echo 'Testing..'
-                    batch: mvn clean test
-                }
-            }
-            stage('Deploy') {
-                steps {
-                    echo 'Deploying....'
-                }
-            }
+            echo 'Cloning the code from Git repo'
+            git branch: 'master',url:'https://github.com/burkulvikas/VikasNAGP.git'
+
         }
+        stage('Test'){
+
+            echo 'Testing the test cases'
+            bat 'mvn clean test'
+
+        }
+
+        echo 'Build has been success!!!'
+
+    }catch(Exception e){
+
+        echo 'Build got failed'
+
+    }finally{
+
+        echo 'this block is execute always'
+
     }
+}
