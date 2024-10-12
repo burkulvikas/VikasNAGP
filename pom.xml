@@ -32,10 +32,27 @@
           </suiteXmlFiles>
         </configuration>
       </plugin>
-
+      <plugin>
+          <groupId>org.sonarsource.scanner.maven</groupId>
+          <artifactId>sonar-maven-plugin</artifactId>
+          <version>3.7.0.1746</version>
+      </plugin>
 
     </plugins>
   </build>
+  <profiles>
+    <profile>
+     <id>sonar</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+       <sonar.host.url>
+        http://localhost:9000
+        </sonar.host.url>
+      </properties>
+    </profile>
+  </profiles>
 
   <dependencies>
     <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->

@@ -7,29 +7,31 @@ pipeline {
             }
 
             stages {
-                stage('Clone Code') {
+                stage("Clone the code") {
                     steps {
                 git branch: 'master', url: 'https://github.com/burkulvikas/VikasNAGP.git'                    }
                       }
                 }
-                stage('Build code') {
+                stage("Build The code") {
                     steps {
                         // Run Maven clean
                         bat 'mvn clean'
                     }
                 }
-                 stage('Run Test') {
+                 stage("Run The Test") {
                     steps {
                        // Run Maven test
                             bat 'mvn test'
                       }
                  }
 
-                stage('SonarQube Analysis') {
-                    steps {
-                     withSonarQubeEnv('Test_SonarQube'){
-                        bat 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:4.0.0.4121:sonar'
+                stage("SonarQube Analysis") {
+                    agent any
+                    step{
+                    withSonarQubeEnv('Test_SonarQube'){
+                    sh 'mvn clean package sonar:sonar'
                     }
+
                 }
             }
 
