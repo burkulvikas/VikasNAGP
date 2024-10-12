@@ -2,35 +2,33 @@
 pipeline {
             agent any
 
-            environment {
-                // Set the SonarQube server URL and token
-                SONAR_HOST_URL = 'http://localhost:9000'
-           SONAR_TOKEN = credentials('sqa_f6b2022a72283dd3ff13e436318c12a694c3f38f') // Replace with your credential ID
+            tools {
+                maven 'Maven'
             }
 
             stages {
                 stage('Clone Code') {
                     steps {
-                        // Checkout the master branch
                 git branch: 'master', url: 'https://github.com/burkulvikas/VikasNAGP.git'                    }
+                      }
                 }
-
-                stage('Build and Test') {
+                stage('Build code') {
                     steps {
-                        // Run Maven clean and test
-                        bat 'mvn clean test'
+                        // Run Maven clean
+                        bat 'mvn clean'
                     }
                 }
+                 stage('Run Test') {
+                    steps {
+                       // Run Maven test
+                            bat 'mvn test'
+                      }
+                 }
 
                 stage('SonarQube Analysis') {
                     steps {
-                        // Run SonarQube analysis
-                        bat '''
-                        mvn sonar:sonar ^
-                            //-Dsonar.projectKey=your-project-key ^
-                            -Dsonar.host.url=%SONAR_HOST_URL% ^
-                            -Dsonar.login=%SONAR_TOKEN%
-                        '''
+                     withSonarQubeEnv('Test_SonarQube'){
+                        bat 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:4.0.0.4121:sonar'
                     }
                 }
             }
