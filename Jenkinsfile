@@ -1,35 +1,35 @@
 
 pipeline {
             agent any
-            stages {
-                stage("Clone the code") {
-                    steps {
+            Stages{
+                Stage("Clone the code") {
+                    steps{
                 git branch: 'master', url: 'https://github.com/burkulvikas/VikasNAGP.git'                    }
                       }
                 }
-                stage("Build") {
-                    steps {
+                Stage("Build") {
+                    Steps{
                         // Run Maven clean
                         bat 'mvn clean test'
                     }
                 }
-                stage("SonarQube Analysis") {
+                Stage("SonarQube Analysis") {
                     agent any
-                    step{
+                    Step{
                     withSonarQubeEnv('Test_SonarQube'){
                     sh 'mvn clean package sonar:sonar'
                     }
                 }
             }
             post {
-                always {
+                always{
                     // Clean up or notify if needed
                     echo 'Cleaning up...'
                 }
-                success {
+                success{
                     echo 'Pipeline completed successfully!'
                 }
-                failure {
+                failure{
                     echo 'Pipeline failed!'
                 }
             }
