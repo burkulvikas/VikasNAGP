@@ -19,7 +19,7 @@ pipeline {
                         // sonarqube analysis & Clean and package the application using Maven (Windows command)
                         echo 'SonarQube Analysis going on...'
                         withSonarQubeEnv('Test_SonarQube') {
-                        bat 'mvn clean sonar:sonar'
+                        bat 'mvn clean package sonar:sonar'
                         }
                     }
                 }
@@ -28,6 +28,24 @@ pipeline {
             steps {
                 // Run tests using Maven (Windows command)
                 bat 'mvn test'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                rtMavenDeployer(
+                   id: 'deployer',
+                   serverId: '3190785@artifactory',
+                   releaseRepo: 'nagp.assignment2024',
+                   snapshotRepo: 'nagp.assignment2024'
+                )
+                rtMavenRun(
+                   pom:'pom.xml',
+                   goals: 'clean install',
+                   deployerId:'deployer'
+                )
+                rtPublishBuildInfo(
+                   serverId: '3190785@artifactory',
+                )
             }
         }
     }
