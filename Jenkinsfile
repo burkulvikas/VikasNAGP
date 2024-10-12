@@ -19,10 +19,16 @@ pipeline {
                         // sonarqube analysis & Clean and package the application using Maven (Windows command)
                         echo 'SonarQube Analysis going on...'
                         withSonarQubeEnv('Test_SonarQube') {
-                        bat 'mvn clean package sonar:sonar'
+                        bat 'mvn clean sonar:sonar'
                         }
                     }
                 }
+
+        stage('Test') {
+            steps {
+                // Run tests using Maven (Windows command)
+                bat 'mvn test'
+            }
         }
 
         stage('Publish to Artifactory') {
