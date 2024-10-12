@@ -5,7 +5,7 @@ pipeline {
             environment {
                 // Set the SonarQube server URL and token
                 SONAR_HOST_URL = 'http://localhost:9000'
-                SONAR_TOKEN = sqa_f6b2022a72283dd3ff13e436318c12a694c3f38f // Replace with your credential ID
+           SONAR_TOKEN = credentials('sqa_f6b2022a72283dd3ff13e436318c12a694c3f38f') // Replace with your credential ID
             }
 
             stages {
@@ -27,7 +27,7 @@ pipeline {
                         // Run SonarQube analysis
                         bat '''
                         mvn sonar:sonar ^
-                            -Dsonar.projectKey=your-project-key ^
+                            //-Dsonar.projectKey=your-project-key ^
                             -Dsonar.host.url=%SONAR_HOST_URL% ^
                             -Dsonar.login=%SONAR_TOKEN%
                         '''
