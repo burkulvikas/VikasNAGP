@@ -4,22 +4,28 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Checkout the code from the repository
-                git 'https://github.com/burkulvikas/VikasNAGP.git'
+                // Checkout the code from the repository, only on the master branch
+                script {
+                    def branch = env.GIT_BRANCH
+                    if (branch != 'origin/master') {
+                        error "Not on master branch: ${branch}"
+                    }
+                }
+                git branch: 'master', url: 'https://github.com/burkulvikas/VikasNAGP.git'
             }
         }
 
         stage('Build') {
             steps {
-                // Clean and package the application using Maven
-                sh 'mvn clean package'
+                // Clean and package the application using Maven (Windows command)
+                bat 'mvn clean package'
             }
         }
 
         stage('Test') {
             steps {
-                // Run tests using Maven
-                sh 'mvn test'
+                // Run tests using Maven (Windows command)
+                bat 'mvn test'
             }
         }
 
@@ -27,7 +33,7 @@ pipeline {
             steps {
                 // Deploy the application (this is a placeholder step)
                 echo 'Deploying the application...'
-                // You can add deployment commands here, like uploading to a server
+                // Add deployment commands here (use Windows commands if needed)
             }
         }
     }
