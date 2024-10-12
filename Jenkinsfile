@@ -30,6 +30,27 @@ pipeline {
                 bat 'mvn test'
             }
         }
+
+        stage('Publish to Artifactory') {
+            steps {
+                // Publish to Artifactory
+                rtMavenDeployer(
+                id: 'deployer',
+                serverId: '3190785@artifactory',
+                releaseRepo: 'nagp.assignment2024',
+                snapshotRepo: 'nagp.assignment2024'
+                )
+                rtMavenRun(
+                pom:'pom.xml',
+                goals: 'clean install',
+                deployerId:'deployer'
+                )
+                rtPublishBuildInfo(
+                serverId: '3190785@artifactory',
+                )
+
+            }
+        }
     }
 
     post {
