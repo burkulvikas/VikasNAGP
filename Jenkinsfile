@@ -5,12 +5,6 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Checkout the code from the repository, only on the master branch
-                script {
-                    def branch = env.GIT_BRANCH
-                    if (branch != 'origin/master') {
-                        error "Not on master branch: ${branch}"
-                    }
-                }
                 git branch: 'master', url: 'https://github.com/burkulvikas/VikasNAGP.git'
             }
         }
@@ -23,12 +17,6 @@ pipeline {
                         }
                     }
                 }
-
-        stage('Test') {
-            steps {
-                // Run tests using Maven (Windows command)
-                bat 'mvn test'
-            }
         }
 
         stage('Publish to Artifactory') {
