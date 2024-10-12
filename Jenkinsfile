@@ -14,28 +14,20 @@ pipeline {
                 git branch: 'master', url: 'https://github.com/burkulvikas/VikasNAGP.git'
             }
         }
-
-        stage('Build') {
-            steps {
-                // Clean and package the application using Maven (Windows command)
-                bat 'mvn clean package'
-            }
-        }
+        stage('Build & SonarQube Analysis') {
+                    steps {
+                        // sonarqube analysis & Clean and package the application using Maven (Windows command)
+                        echo 'SonarQube Analysis going on...'
+                        withSonarQubeEnv('Test_SonarQube') {
+                        bat 'mvn clean package sonar:sonar'
+                        }
+                    }
+                }
 
         stage('Test') {
             steps {
                 // Run tests using Maven (Windows command)
                 bat 'mvn test'
-            }
-        }
-
-        stage('SonarQube Analysis') {
-            steps {
-                // sonarqube analysis
-                echo 'SonarQube Analysis going on...'
-                withSonarQubeEnv('Test_SonarQube') {
-                bat 'mvn clean package sonar:sonar'
-                }
             }
         }
     }
