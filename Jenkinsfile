@@ -33,7 +33,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 rtMavenDeployer(
-                   id: 'deployer',
+                   id: 'admin',
                    serverId: '3190785@artifactory',
                    releaseRepo: 'nagp.assignment2024',
                    snapshotRepo: 'nagp.assignment2024'
@@ -41,7 +41,7 @@ pipeline {
                 rtMavenRun(
                    pom:'pom.xml',
                    goals: 'clean install',
-                   deployerId:'deployer'
+                   deployerId:'admin'
                 )
                 rtPublishBuildInfo(
                    serverId: '3190785@artifactory',
