@@ -29,11 +29,13 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+        stage('SonarQube Analysis') {
             steps {
-                // Deploy the application (this is a placeholder step)
-                echo 'Deploying the application...'
-                // Add deployment commands here (use Windows commands if needed)
+                // sonarqube analysis
+                echo 'SonarQube Analysis going on...'
+                withSonarQubeEnv('Test_SonarQube') {
+                bat 'mvn clean package sonar:sonar'
+                }
             }
         }
     }
