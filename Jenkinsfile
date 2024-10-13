@@ -31,6 +31,8 @@ pipeline {
             }
         }
 
+    }
+
     post {
         success {
             // Actions to perform on success
