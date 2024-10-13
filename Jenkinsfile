@@ -23,18 +23,25 @@ pipeline {
                         }
                     }
                 }
-        stage('Deploy') {
+
+        stage('Test') {
+            steps {
+                // Run tests using Maven (Windows command)
+                bat 'mvn test'
+            }
+        }
+        stage('Deployer') {
             steps {
                 rtMavenDeployer(
-                   id: 'deployer',
+                   id: 'deployer12',
                    serverId: '3190785@artifactory',
                    releaseRepo: 'nagp.assignment2024',
                    snapshotRepo: 'nagp.assignment2024'
                 )
                 rtMavenRun(
                    pom:'pom.xml',
-                   goals: 'mvn clean install',
-                   deployerId:'deployer'
+                   goalsOption: 'mvn clean install',
+                   deployerId:'deployer12'
                 )
                 rtPublishBuildInfo(
                    serverId: '3190785@artifactory',
