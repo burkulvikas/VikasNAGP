@@ -30,25 +30,6 @@ pipeline {
                 bat 'mvn test'
             }
         }
-        stage('Deployer') {
-            steps {
-                rtMavenDeployer(
-                   id: 'deployer12',
-                   serverId: '3190785@artifactory',
-                   releaseRepo: 'nagp.assignment2024',
-                   snapshotRepo: 'nagp.assignment2024'
-                )
-                rtMavenRun(
-                   pom:'pom.xml',
-                   goals: 'mvn clean install',
-                   deployerId:'deployer12'
-                )
-                rtPublishBuildInfo(
-                   serverId: '3190785@artifactory',
-                )
-            }
-        }
-    }
 
     post {
         success {
