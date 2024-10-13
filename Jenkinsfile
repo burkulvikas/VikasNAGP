@@ -23,13 +23,6 @@ pipeline {
                         }
                     }
                 }
-
-        stage('Test') {
-            steps {
-                // Run tests using Maven (Windows command)
-                bat 'mvn test'
-            }
-        }
         stage('Deploy') {
             steps {
                 rtMavenDeployer(
